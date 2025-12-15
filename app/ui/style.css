@@ -1,0 +1,259 @@
+:root {
+    --primary-green: #2e7d32;
+    --dark-green: #1b5e20;
+    --light-bg: #f3f6f4;
+    --white: #ffffff;
+    --text-dark: #333;
+    --text-muted: #666;
+    --accent-optimal: #4caf50;
+    --accent-sub: #e53935;
+}
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    font-family: 'Poppins', sans-serif; 
+}
+
+body { 
+    background-color: var(--light-bg); 
+    color: var(--text-dark); 
+    height: 100vh; 
+    /* Mengizinkan scroll hanya pada main-content di desktop */
+    overflow: hidden; 
+}
+
+.dashboard-container { 
+    display: flex; 
+    height: 100%; 
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 260px;
+    background: linear-gradient(180deg, var(--dark-green) 0%, var(--primary-green) 100%);
+    color: var(--white);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0; /* Pastikan sidebar tidak mengecil */
+}
+
+.sidebar .logo h2 { font-size: 1.5rem; margin-bottom: 0.2rem; }
+.sidebar .logo p { font-size: 0.8rem; opacity: 0.8; margin-bottom: 3rem; }
+
+.sidebar nav ul { list-style: none; }
+.sidebar nav li {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.8; /* Sedikit lebih jelas daripada 0.7 */
+}
+
+/* Memastikan teks tautan di sidebar berwarna putih dan mewarisi style parent <li> */
+.sidebar nav li a { 
+    color: var(--white); 
+    text-decoration: none;
+    display: block;
+    /* Memastikan font-weight dan opacity mengikuti <li> */
+    font-weight: inherit;
+    opacity: inherit; 
+}
+
+.sidebar nav li:hover, .sidebar nav li.active { 
+    background: rgba(255,255,255,0.15); /* Warna hover sedikit lebih terang */
+    opacity: 1; 
+    font-weight: 600; 
+}
+.sidebar .footer-info { 
+    margin-top: auto; 
+    font-size: 0.7rem; 
+    opacity: 0.6; 
+}
+
+/* MAIN CONTENT */
+.main-content { 
+    flex: 1; 
+    padding: 2rem 3rem; 
+    overflow-y: auto; /* Memungkinkan scroll hanya pada konten utama */
+}
+
+/* TAB LOGIC (Digunakan untuk section di halaman masing-masing) */
+.tab-content { 
+    display: block; 
+    animation: fadeIn 0.4s; 
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+header { margin-bottom: 2rem; }
+header h1 { color: var(--dark-green); }
+header p { color: var(--text-muted); }
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+}
+
+/* CARDS */
+.card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+.input-card h3 { color: var(--primary-green); margin-bottom: 1.5rem; border-bottom: 2px solid #eee; padding-bottom: 0.5rem;}
+
+/* FORM ELEMENTS */
+.form-group { margin-bottom: 1.2rem; }
+.form-row { display: flex; gap: 1rem; }
+.form-row .form-group { flex: 1; }
+.form-label-group { font-size: 0.85rem; font-weight: 600; margin: 1rem 0 0.5rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+
+label { display: block; font-size: 0.9rem; margin-bottom: 0.4rem; color: #555; }
+input, select {
+    width: 100%; padding: 0.8rem; border: 1px solid #ddd;
+    border-radius: 8px; font-size: 1rem; transition: 0.3s; background: #fafafa;
+}
+input:focus, select:focus { outline: none; border-color: var(--primary-green); background: #fff; box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1); }
+
+/* RGB INPUTS */
+.rgb-inputs { gap: 10px; }
+.rgb-group { flex: 1; position: relative; }
+.rgb-group span { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-weight: bold; font-size: 0.8rem; }
+.rgb-group input { padding-left: 25px; text-align: center; font-weight: bold; }
+.rgb-group.red span { color: #e53935; }
+.rgb-group.green span { color: #43a047; }
+.rgb-group.blue span { color: #1e88e5; }
+
+.btn-analyze {
+    width: 100%; margin-top: 1rem; padding: 1rem;
+    background: var(--primary-green); color: white; border: none;
+    border-radius: 8px; font-size: 1.1rem; font-weight: 600;
+    cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px;
+}
+.btn-analyze:hover { filter: brightness(90%); transform: translateY(-2px); }
+
+/* RESULT AREA */
+.result-card { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; min-height: 400px; position: relative; overflow: hidden; }
+
+.pulse-circle { width: 60px; height: 60px; background: #ddd; border-radius: 50%; margin-bottom: 1rem; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0,0,0, 0.2); } 70% { box-shadow: 0 0 0 20px rgba(0,0,0, 0); } 100% { box-shadow: 0 0 0 0 rgba(0,0,0, 0); } }
+
+.hidden { display: none !important; }
+
+.status-badge { padding: 0.5rem 1.5rem; border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 1rem; display: inline-block; }
+h2#mainInstruction { font-size: 2rem; margin-bottom: 2rem; line-height: 1.2; }
+.metrics-grid { display: flex; gap: 2rem; width: 100%; justify-content: center; margin-bottom: 2rem; }
+.metric-item { display: flex; flex-direction: column; }
+.metric-item .label { font-size: 0.8rem; color: var(--text-muted); }
+.metric-item .value { font-size: 1.5rem; font-weight: 700; color: var(--text-dark); }
+
+.visual-preview { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: var(--text-muted); background: #f5f5f5; padding: 10px 20px; border-radius: 50px; }
+.color-box { width: 25px; height: 25px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+/* STATUS STYLES */
+.is-optimal .status-badge { background: #e8f5e9; color: var(--accent-optimal); }
+.is-optimal h2 { color: var(--accent-optimal); }
+.is-suboptimal .status-badge { background: #ffebee; color: var(--accent-sub); }
+.is-suboptimal h2 { color: var(--accent-sub); }
+
+/* DATA TABLE */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th, .data-table td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+.data-table th { background-color: #f9f9f9; color: var(--dark-green); font-weight: 600; }
+.data-table tr:hover { background-color: #f1f8e9; }
+.status-optimal { color: #2e7d32; font-weight: bold; background: #e8f5e9; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;}
+.status-sub { color: #c62828; font-weight: bold; background: #ffebee; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem;}
+
+/* ================================================= */
+/* MEDIA QUERIES (RESPONSIVE) */
+/* ================================================= */
+
+@media (max-width: 1024px) {
+    /* Penyesuaian untuk tablet */
+    .main-content { padding: 1.5rem 2rem; }
+    .content-grid { gap: 1.5rem; }
+    .sidebar { width: 200px; padding: 1rem; }
+    .sidebar .logo p { margin-bottom: 2rem; }
+}
+
+@media (max-width: 768px) {
+    /* Penyesuaian untuk mobile dan layar kecil */
+    
+    body { overflow-y: auto; }
+    .dashboard-container { flex-direction: column; height: auto; }
+    
+    /* SIDEBAR - Jadikan navbar atas horizontal */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        flex-direction: row; 
+        justify-content: space-between;
+        align-items: center;
+        position: sticky; 
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .sidebar .logo h2 { font-size: 1.2rem; }
+    .sidebar .logo p { display: none; } 
+    .sidebar .footer-info { display: none; } 
+
+    .sidebar nav { 
+        width: auto; /* Biarkan nav menyesuaikan konten */
+    }
+    .sidebar nav ul { 
+        display: flex; 
+        justify-content: flex-end; 
+        gap: 5px;
+        margin: 0;
+        padding: 0;
+    }
+    .sidebar nav li {
+        padding: 0.5rem 0.8rem;
+        margin-bottom: 0;
+        opacity: 1; 
+        font-size: 0.8rem;
+    }
+    
+    /* MAIN CONTENT - Full width, padding lebih kecil */
+    .main-content { 
+        width: 100%;
+        padding: 1rem;
+        /* Hapus overflow-y: auto agar tidak ada dua scrollbar */
+        overflow-y: visible;
+    }
+
+    /* GRID - Jadikan kolom tunggal */
+    .content-grid {
+        grid-template-columns: 1fr; 
+        gap: 1rem;
+    }
+
+    /* FORM ROW - Jadikan vertikal */
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .form-row .form-group { width: 100%; }
+    
+    /* RGB INPUTS - Pertahankan horizontal */
+    .rgb-inputs { flex-direction: row; gap: 10px; }
+    
+    /* RESULT CARD */
+    .result-card { min-height: 250px; }
+    h2#mainInstruction { font-size: 1.5rem; margin-bottom: 1rem; }
+    .metrics-grid { flex-direction: column; gap: 1rem; }
+    .metric-item .value { font-size: 1.2rem; }
+
+    /* DATA TABLE - Jadikan scrollable horizontal jika terlalu lebar */
+    .card#historyCardContainer { overflow-x: auto; }
+    .data-table { min-width: 600px; }
+}

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHarvest | Analisis Real-Time</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>SmartHarvest</h2>
+                <p>Tobacco Intelligence</p>
+            </div>
+            <nav>
+                <ul id="navMenu">
+                    <li class="active"><a href="index.html">📊 Analisis Panen</a></li>
+                    <li><a href="config.html">⚙️ Konfigurasi</a></li>
+                    <li><a href="history.html">📝 Riwayat Data</a></li>
+                </ul>
+            </nav>
+            <div class="footer-info">
+                <p>Versi Model: Random Forest v1.0</p>
+                <p>DB: Connected (Via API)</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section id="analysis-content" class="tab-content active">
+                <header>
+                    <h1>Klasifikasi Daun Real-Time</h1>
+                    <p>Masukkan parameter sensor daun untuk prediksi presisi.</p>
+                </header>
+                <div class="content-grid">
+                    <div class="card input-card">
+                        <h3>📥 Input Data Sensor</h3>
+                        <form id="harvestForm">
+                            <div class="form-group">
+                                <label>Varietas Tembakau</label>
+                                <select name="tobacco_variety">
+                                    <option value="Virginia">Virginia (Premium)</option>
+                                    <option value="Burley">Burley</option>
+                                    <option value="Oriental">Oriental</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Posisi Priming (1-10)</label>
+                                    <input type="number" name="priming_position" min="1" max="10" value="5" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tekstur (LBP Score)</label>
+                                    <input type="number" name="texture_lbp" step="0.01" value="45.20" required>
+                                </div>
+                            </div>
+
+                            <div class="form-label-group">Analisis Warna (RGB)</div>
+                            <div class="form-row rgb-inputs">
+                                <div class="rgb-group red">
+                                    <span>R</span>
+                                    <input type="number" name="R" value="200" min="0" max="255" oninput="updateColorPreview()">
+                                </div>
+                                <div class="rgb-group green">
+                                    <span>G</span>
+                                    <input type="number" name="G" value="220" min="0" max="255" oninput="updateColorPreview()">
+                                </div>
+                                <div class="rgb-group blue">
+                                    <span>B</span>
+                                    <input type="number" name="B" value="100" min="0" max="255" oninput="updateColorPreview()">
+                                </div>
+                            </div>
+
+                            <div class="form-label-group">Mikroklimat</div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Suhu (°C)</label>
+                                    <input type="number" name="local_temp" step="0.1" value="28.5">
+                                </div>
+                                <div class="form-group">
+                                    <label>Kelembaban (%)</label>
+                                    <input type="number" name="local_humidity" step="1" value="75">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-analyze">
+                                <span class="icon">🔍</span> Analisis Sekarang
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card result-card" id="resultCard">
+                        <div class="result-placeholder">
+                            <div class="pulse-circle"></div>
+                            <p>Menunggu data input...</p>
+                        </div>
+                        
+                        <div class="result-content hidden">
+                            <div class="status-badge" id="statusBadge">--</div>
+                            <h2 id="mainInstruction">--</h2>
+                            
+                            <div class="metrics-grid">
+                                <div class="metric-item">
+                                    <span class="label">Tingkat Keyakinan</span>
+                                    <span class="value" id="confidenceVal">0%</span>
+                                </div>
+                                <div class="metric-item">
+                                    <span class="label">Posisi Daun</span>
+                                    <span class="value" id="primingVal">-</span>
+                                </div>
+                            </div>
+
+                            <div class="visual-preview">
+                                <div id="colorPreview" class="color-box"></div>
+                                <span id="colorText">Warna: RGB(200, 220, 100)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

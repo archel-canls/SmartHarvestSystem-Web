@@ -1,0 +1,4 @@
+app/api/smart-harvest-service-key.json
+*.pyc
+__pycache__/
+data/*.db

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHarvest | Riwayat Data</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>SmartHarvest</h2>
+                <p>Tobacco Intelligence</p>
+            </div>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="index.html">📊 Analisis Panen</a></li>
+                    <li><a href="config.html">⚙️ Konfigurasi</a></li>
+                    <li class="active"><a href="history.html">📝 Riwayat Data</a></li>
+                </ul>
+            </nav>
+            <div class="footer-info">
+                <p>Versi Model: Random Forest v1.0</p>
+                <p>DB: Connected (Via API)</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section id="history-content" class="tab-content active">
+                <header>
+                    <h1>Riwayat Data</h1>
+                    <p>Data tersimpan di Database Firebase Realtime.</p>
+                    <button onclick="loadHistory()" class="btn-analyze" style="width:auto; padding: 5px 15px; background-color: #ff9800;">🔄 Refresh</button>
+                </header>
+                <div class="card" id="historyCardContainer"> 
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Varietas</th>
+                                <th>Priming</th>
+                                <th>RGB</th>
+                                <th>Status</th>
+                                <th>Instruksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Panggil fungsi pemuatan data saat halaman Riwayat dimuat
+        document.addEventListener('DOMContentLoaded', window.loadHistory);
+    </script>
+</body>
+</html>

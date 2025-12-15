@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartHarvest | Konfigurasi Sistem</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>SmartHarvest</h2>
+                <p>Tobacco Intelligence</p>
+            </div>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="index.html">📊 Analisis Panen</a></li>
+                    <li class="active"><a href="config.html">⚙️ Konfigurasi</a></li>
+                    <li><a href="history.html">📝 Riwayat Data</a></li>
+                </ul>
+            </nav>
+            <div class="footer-info">
+                <p>Versi Model: Random Forest v1.0</p>
+                <p>DB: Connected (Via API)</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section id="config-content" class="tab-content active">
+                <header>
+                    <h1>Konfigurasi Sistem</h1>
+                    <p>Atur batas keamanan, *override* keputusan AI, dan ambang batas sensor.</p>
+                </header>
+                <div class="card config-card" id="configCardContainer"> 
+                    <form id="configForm">
+                        <h3>🛠️ Pengaturan Utama</h3>
+                        <div class="form-group">
+                            <label>Mode Ketat (Strict Mode)</label>
+                            <select id="strict_mode">
+                                <option value="true">Aktif (Butuh Keyakinan > 90%)</option>
+                                <option value="false">Non-Aktif (Default)</option>
+                            </select>
+                        </div>
+                        
+                        <h3>🌡️ Batas Suhu Minimum (°C)</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Virginia (Min)</label>
+                                <input type="number" id="min_temp_virginia" step="0.1" value="25.0">
+                            </div>
+                            <div class="form-group">
+                                <label>Burley (Min)</label>
+                                <input type="number" id="min_temp_burley" step="0.1" value="23.0">
+                            </div>
+                            <div class="form-group">
+                                <label>Oriental (Min)</label>
+                                <input type="number" id="min_temp_oriental" step="0.1" value="21.0"> </div>
+                        </div>
+
+                        <h3>🎨 Batas Warna Optimal (RGB)</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Red Min (R)</label>
+                                <input type="number" id="optimal_R_min" min="0" max="255" value="180"> </div>
+                            <div class="form-group">
+                                <label>Green Min (G)</label>
+                                <input type="number" id="optimal_G_min" min="0" max="255" value="180"> </div>
+                            <div class="form-group">
+                                <label>Blue Max (B)</label>
+                                <input type="number" id="optimal_B_max" min="0" max="255" value="120"> </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Toleransi Rasio R/G (±)</label>
+                            <input type="number" id="rgb_ratio_tolerance" step="0.01" value="0.15"> </div>
+
+                        <h3>💧 Batas Lingkungan & Tekstur</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Kelembaban Maksimum (%)</label>
+                                <input type="number" id="max_humidity" step="1" value="90">
+                            </div>
+                            <div class="form-group">
+                                <label>Tekstur Min. Optimal (LBP)</label>
+                                <input type="number" id="texture_optimal_min" step="0.1" value="40.0"> </div>
+                            <div class="form-group">
+                                <label>Tekstur Max. Optimal (LBP)</label>
+                                <input type="number" id="texture_optimal_max" step="0.1" value="60.0"> </div>
+                        </div>
+
+                        <button type="submit" class="btn-analyze" style="background-color: #1565c0;">💾 Simpan Konfigurasi</button>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', window.loadConfig);
+    </script>
+</body>
+</html>
