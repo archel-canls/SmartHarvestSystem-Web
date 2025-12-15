@@ -1,0 +1,8 @@
+# File: requirements.txt
+pandas
+scikit-learn
+joblib
+flask
+flask-cors
+firebase-admin
+gunicorn
