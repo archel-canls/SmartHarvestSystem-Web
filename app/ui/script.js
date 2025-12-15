@@ -1,4 +1,4 @@
-// File: app/ui/script.js (Final)
+// File: app/ui/script.js (Final & Clean for 3 Pages)
 
 // --- 1. FITUR WARNA REAL-TIME & KLASIFIKASI ---
 function determineColorName(r, g, b) {
@@ -46,9 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const harvestForm = document.getElementById('harvestForm');
     if (harvestForm) {
-        // GANTI DENGAN URL API PUBLIK ANDA JIKA SUDAH DI DEPLOY KE RENDER/RAILWAY
-        const API_BASE_URL = 'http://localhost:8080'; // UBAH INI!
-        
         harvestForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.querySelector('.btn-analyze');
@@ -66,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             for (let key in data) { if(key !== 'tobacco_variety') data[key] = parseFloat(data[key]); }
 
             try {
-                const res = await fetch(`${API_BASE_URL}/predict`, { 
+                const res = await fetch('http://localhost:8080/predict', { 
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(data)
@@ -119,11 +116,8 @@ window.loadConfig = async function() {
     const inputs = formElement.querySelectorAll('input, select');
     inputs.forEach(input => input.disabled = true);
     
-    // GANTI DENGAN URL API PUBLIK ANDA JIKA SUDAH DI DEPLOY KE RENDER/RAILWAY
-    const API_BASE_URL = 'http://localhost:8080'; // UBAH INI!
-
     try {
-        const res = await fetch(`${API_BASE_URL}/config`); 
+        const res = await fetch('http://localhost:8080/config'); 
         
         if (!res.ok) {
             const errorBody = await res.json().catch(() => ({'error': 'Gagal memuat konfigurasi'}));
@@ -132,18 +126,19 @@ window.loadConfig = async function() {
         
         const config = await res.json();
         
-        // Isi nilai-nilai form
+        // Isi nilai-nilai form (semua field baru)
         document.getElementById('strict_mode').value = config.strict_mode.toString();
         document.getElementById('min_temp_virginia').value = config.min_temp_virginia;
         document.getElementById('min_temp_burley').value = config.min_temp_burley;
-        document.getElementById('min_temp_oriental').value = config.min_temp_oriental; 
+        document.getElementById('min_temp_oriental').value = config.min_temp_oriental; // BARU
         document.getElementById('max_humidity').value = config.max_humidity; 
-        document.getElementById('optimal_R_min').value = config.optimal_R_min;       
-        document.getElementById('optimal_G_min').value = config.optimal_G_min;       
-        document.getElementById('optimal_B_max').value = config.optimal_B_max;       
-        document.getElementById('rgb_ratio_tolerance').value = config.rgb_ratio_tolerance; 
-        document.getElementById('texture_optimal_min').value = config.texture_optimal_min; 
-        document.getElementById('texture_optimal_max').value = config.texture_optimal_max; 
+        document.getElementById('optimal_R_min').value = config.optimal_R_min;       // BARU
+        document.getElementById('optimal_G_min').value = config.optimal_G_min;       // BARU
+        document.getElementById('optimal_B_max').value = config.optimal_B_max;       // BARU
+        document.getElementById('rgb_ratio_tolerance').value = config.rgb_ratio_tolerance; // BARU
+        document.getElementById('texture_optimal_min').value = config.texture_optimal_min; // BARU
+        document.getElementById('texture_optimal_max').value = config.texture_optimal_max; // BARU
+
         
     } catch(e) { 
          alert(`❌ Gagal memuat data konfigurasi: ${e.message}. Cek koneksi API dan Database.`);
@@ -159,25 +154,60 @@ async function handleConfigSubmit(e) {
     btn.innerHTML = 'Menyimpan...';
     btn.disabled = true;
 
-    // GANTI DENGAN URL API PUBLIK ANDA JIKA SUDAH DI DEPLOY KE RENDER/RAILWAY
-    const API_BASE_URL = 'http://localhost:8080'; // UBAH INI!
+    const configData = {
+        strict_mode: document.getElementById('strict_mode').value === 'true',
+        min_temp_virginia: parseFloat(document.getElementById('min_temp_virginia').value),
+        min_temp_burley: parseFloat(document.getElementById('min_temp_burley').value),
+        min_temp_oriental: parseFloat(document.getElementById('min_temp_oriental').value), // BARU
+        max_humidity: parseFloat(document.getElementById('max_humidity').value), 
+        optimal_R_min: parseFloat(document.getElementById('optimal_R_min').value),       // BARU
+        optimal_G_min: parseFloat(document.getElementById('optimal_G_min').value),       // BARU
+        optimal_B_max: parseFloat(document.getElementById('optimal_B_max').value),       // BARU
+        rgb_ratio_tolerance: parseFloat(document.getElementById('rgb_ratio_tolerance').value), // BARU
+        texture_optimal_min: parseFloat(document.getElementById('texture_optimal_min').value), // BARU
+        texture_optimal_max: parseFloat(document.getElementById('texture_optimal_max').value), // BARU
+    };
+    
+    try {
+        const res = await fetch('http://localhost:8080/config', { 
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(configData)
+        });
+
+        if (!res.ok) {
+            const errorBody = await res.json().catch(() => ({'error': 'Server merespons non-OK'}));
+            throw new Error(errorBody.error || `Error HTTP: ${res.status}`);
+        }
+        
+        alert("✅ Konfigurasi Tersimpan!");
+
+    } catch (e) {
+        alert("Gagal menyimpan konfigurasi. Periksa koneksi API dan Database. Detail: " + e.message);
+    } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        window.loadConfig(); 
+    }
+}
+
+async function handleConfigSubmit(e) {
+    e.preventDefault();
+    const btn = document.querySelector('#configForm .btn-analyze');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Menyimpan...';
+    btn.disabled = true;
 
     const configData = {
         strict_mode: document.getElementById('strict_mode').value === 'true',
         min_temp_virginia: parseFloat(document.getElementById('min_temp_virginia').value),
         min_temp_burley: parseFloat(document.getElementById('min_temp_burley').value),
-        min_temp_oriental: parseFloat(document.getElementById('min_temp_oriental').value), 
         max_humidity: parseFloat(document.getElementById('max_humidity').value), 
-        optimal_R_min: parseFloat(document.getElementById('optimal_R_min').value),       
-        optimal_G_min: parseFloat(document.getElementById('optimal_G_min').value),       
-        optimal_B_max: parseFloat(document.getElementById('optimal_B_max').value),       
-        rgb_ratio_tolerance: parseFloat(document.getElementById('rgb_ratio_tolerance').value), 
-        texture_optimal_min: parseFloat(document.getElementById('texture_optimal_min').value), 
-        texture_optimal_max: parseFloat(document.getElementById('texture_optimal_max').value), 
+        texture_tolerance: parseFloat(document.getElementById('texture_tolerance').value), 
     };
     
     try {
-        const res = await fetch(`${API_BASE_URL}/config`, { 
+        const res = await fetch('http://localhost:8080/config', { 
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(configData)
@@ -214,12 +244,9 @@ window.loadHistory = async function() {
     if (!tbody) return;
     
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">⏳ Sedang memuat data riwayat...</td></tr>`;
-
-    // GANTI DENGAN URL API PUBLIK ANDA JIKA SUDAH DI DEPLOY KE RENDER/RAILWAY
-    const API_BASE_URL = 'http://localhost:8080'; // UBAH INI!
     
     try {
-        const res = await fetch(`${API_BASE_URL}/history`); 
+        const res = await fetch('http://localhost:8080/history'); 
         
         if (!res.ok) {
              const errorBody = await res.json().catch(() => ({'error': 'Gagal memuat riwayat'}));
